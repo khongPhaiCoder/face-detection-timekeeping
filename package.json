@@ -1,0 +1,52 @@
+{
+  "name": "face-detection-timekeeping",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "start": "lerna run --parallel start",
+    "build": "yarn lerna run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khongPhaiCoder/face-detection-timekeeping.git"
+  },
+  "keywords": [
+    "face-detection",
+    "face detection",
+    "arduino",
+    "timekeeping",
+    "react",
+    "nextjs",
+    "python",
+    "openCV",
+    "node",
+    "nodeJS",
+    "typescript"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/khongPhaiCoder/face-detection-timekeeping/issues"
+  },
+  "homepage": "https://github.com/khongPhaiCoder/face-detection-timekeeping#readme",
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "husky": "^8.0.3",
+    "lerna": "^6.5.1",
+    "lint-staged": "^13.1.2",
+    "pm2": "^5.2.2",
+    "typescript": "^4.9.5"
+  },
+  "workspaces": [
+    "packages/**/*"
+  ],
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{md,html}": "prettier --write"
+  }
+}
