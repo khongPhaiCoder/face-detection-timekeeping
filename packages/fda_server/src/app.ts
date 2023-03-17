@@ -9,6 +9,7 @@ import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import lusca from 'lusca';
 import errorHandler from 'errorhandler';
+import api from './routes';
 
 import { CLIENT_URL, PORT, SESSION_SECRET, MONGO_URL } from './config';
 import { accessLogStream, connectDatabase, multerConfig } from './configs';
@@ -34,6 +35,8 @@ app.use(
     },
   })
 );
+
+app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(
@@ -46,11 +49,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //     }),
 //   })
 // );
-app.use(lusca.csrf());
-app.use(lusca.xframe('SAMEORIGIN'));
-app.use(lusca.xssProtection(true));
+// app.use(lusca.csrf());
+// app.use(lusca.xframe('SAMEORIGIN'));
+// app.use(lusca.xssProtection(true));
 app.use(morgan('combined', { stream: accessLogStream }));
 app.use(multer(multerConfig.options).fields(multerConfig.fields));
+
+app.use('/api', api);
 
 if (ENVIRONMENT === ENV.DEV) {
   app.use(cors({ origin: CLIENT_URL }));
