@@ -39,7 +39,11 @@
 
 
 int ledpin1 = 15;
-const char *servername = "http://192.168.43.198:8080/api/file/upload";
+// const char *servernameCheckin = "http://192.168.43.198:8080/api/file/checkin";
+// const char *servernameCheckout = "http://192.168.43.198:8080/api/file/checkout";
+
+const char *servernameCheckin = "http://192.168.1.8:8080/api/file/checkin";
+const char *servernameCheckout = "http://192.168.1.8:8080/api/file/checkout";
 const char *postdata = "&esp32capture";
 String content;
 int ref_x = 110;
@@ -238,14 +242,14 @@ static size_t jpg_encode_stream(void * arg, size_t index, const void* data, size
     return len;
 }
 
-static esp_err_t capture_handler(httpd_req_t *req){
+static esp_err_t checkin_handler(httpd_req_t *req ){
     camera_fb_t * fb = NULL;
     esp_err_t res = ESP_OK;
     int64_t fr_start = esp_timer_get_time();
 
     fb = esp_camera_fb_get();
     if (!fb) {
-        Serial.println("Camera capture failed");
+        Serial.println("Camera Checkin capture failed");
         httpd_resp_send_500(req);
         return ESP_FAIL;
     }
@@ -258,7 +262,7 @@ static esp_err_t capture_handler(httpd_req_t *req){
   esp_http_client_handle_t http_client;
   
   esp_http_client_config_t config_client = {0};
-  config_client.url = servername;
+  config_client.url = servernameCheckin;
   config_client.event_handler = _http_event_handler;
   config_client.method = HTTP_METHOD_POST;
   
@@ -353,6 +357,120 @@ static esp_err_t capture_handler(httpd_req_t *req){
 }
 }
 
+static esp_err_t checkout_handler(httpd_req_t *req ){
+    camera_fb_t * fb = NULL;
+    esp_err_t res = ESP_OK;
+    int64_t fr_start = esp_timer_get_time();
+
+    fb = esp_camera_fb_get();
+    if (!fb) {
+        Serial.println("Camera capture Checkout failed");
+        httpd_resp_send_500(req);
+        return ESP_FAIL;
+    }
+
+    httpd_resp_set_type(req, "image/jpeg");
+    httpd_resp_set_hdr(req, "Content-Disposition", "inline; filename=capture.jpg");
+    httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+
+ // send to local pc
+  esp_http_client_handle_t http_client;
+  
+  esp_http_client_config_t config_client = {0};
+  config_client.url = servernameCheckout;
+  config_client.event_handler = _http_event_handler;
+  config_client.method = HTTP_METHOD_POST;
+  
+  http_client = esp_http_client_init(&config_client);
+  
+  esp_http_client_set_post_field(http_client, postdata, strlen(postdata));
+  
+  http_client = esp_http_client_init(&config_client);
+  
+  
+  esp_http_client_set_post_field(http_client, (const char *)fb->buf, fb->len);
+
+  esp_http_client_set_header(http_client, "Content-Type", "image/jpg");
+
+  esp_err_t err = esp_http_client_perform(http_client);
+  if (err == ESP_OK) {
+    Serial.print("esp_http_client_get_status_code: ");
+    Serial.println(esp_http_client_get_status_code(http_client));
+  }
+  
+  esp_http_client_cleanup(http_client);
+
+
+    size_t out_len, out_width, out_height;
+    uint8_t * out_buf;
+    bool s;
+    bool detected = false;
+    int face_id = 0;
+    if(!detection_enabled || fb->width > 400){
+        size_t fb_len = 0;
+        if(fb->format == PIXFORMAT_JPEG){
+            fb_len = fb->len;
+            res = httpd_resp_send(req, (const char *)fb->buf, fb->len);
+        } else {
+            jpg_chunking_t jchunk = {req, 0};
+            res = frame2jpg_cb(fb, 80, jpg_encode_stream, &jchunk)?ESP_OK:ESP_FAIL;
+            httpd_resp_send_chunk(req, NULL, 0);
+            fb_len = jchunk.len;
+        }
+        esp_camera_fb_return(fb);
+        int64_t fr_end = esp_timer_get_time();
+        Serial.printf("JPG: %uB %ums\n", (uint32_t)(fb_len), (uint32_t)((fr_end - fr_start)/1000));
+        return res;
+    }
+
+    dl_matrix3du_t *image_matrix = dl_matrix3du_alloc(1, fb->width, fb->height, 3);
+    if (!image_matrix) {
+        esp_camera_fb_return(fb);
+        Serial.println("dl_matrix3du_alloc failed");
+        httpd_resp_send_500(req);
+        return ESP_FAIL;
+    }
+
+    out_buf = image_matrix->item;
+    out_len = fb->width * fb->height * 3;
+    out_width = fb->width;
+    out_height = fb->height;
+
+    s = fmt2rgb888(fb->buf, fb->len, fb->format, out_buf);
+    esp_camera_fb_return(fb);
+    if(!s){
+        dl_matrix3du_free(image_matrix);
+        Serial.println("to rgb888 failed");
+        httpd_resp_send_500(req);
+        return ESP_FAIL;
+    }
+
+    box_array_t *net_boxes = face_detect(image_matrix, &mtmn_config);
+
+    if (net_boxes){
+        detected = true;
+        if(recognition_enabled){
+        
+        draw_face_boxes(image_matrix, net_boxes, face_id);
+        free(net_boxes->score);
+        free(net_boxes->box);
+        free(net_boxes->landmark);
+        free(net_boxes);
+    }
+
+    jpg_chunking_t jchunk = {req, 0};
+    s = fmt2jpg_cb(out_buf, out_len, out_width, out_height, PIXFORMAT_RGB888, 90, jpg_encode_stream, &jchunk);
+    dl_matrix3du_free(image_matrix);
+    if(!s){
+        Serial.println("JPEG compression failed");
+        return ESP_FAIL;
+    }
+
+    int64_t fr_end = esp_timer_get_time();
+    //Serial.printf("FACE: %uB %ums %s%d\n", (uint32_t)(jchunk.len), (uint32_t)((fr_end - fr_start)/1000), detected?"DETECTED ":"", face_id);
+    return res;
+}
+}
 
 
 static esp_err_t stream_handler(httpd_req_t *req){
@@ -665,10 +783,13 @@ static esp_err_t status_handler(httpd_req_t *req){
 
 static esp_err_t index_handler(httpd_req_t *req){
     httpd_resp_set_type(req, "text/html");
-    httpd_resp_set_hdr(req, "Content-Encoding", "gzip");
-    sensor_t * s = esp_camera_sensor_get();
+    // httpd_resp_set_hdr(req, "Content-Encoding", "gzip");
+    // sensor_t * s = esp_camera_sensor_get();
+    
+    return httpd_resp_send(req, index_html,-1);
+
    
-    return httpd_resp_send(req, (const char *)index_ov2640_html_gz, index_ov2640_html_gz_len);
+    // return httpd_resp_send(req, (const char *)index_ov2640_html_gz, index_ov2640_html_gz_len);
 }
 
 void startCameraServer(){
@@ -695,10 +816,17 @@ void startCameraServer(){
         .user_ctx  = NULL
     };
 
-    httpd_uri_t capture_uri = {
-        .uri       = "/capture",
+    httpd_uri_t checkin_uri = {
+        .uri       = "/checkin",
         .method    = HTTP_GET,
-        .handler   = capture_handler,
+        .handler   = checkin_handler,
+        .user_ctx  = NULL
+    };
+
+    httpd_uri_t checkout_uri = {
+        .uri       = "/checkout",
+        .method    = HTTP_GET,
+        .handler   = checkout_handler,
         .user_ctx  = NULL
     };
 
@@ -733,7 +861,8 @@ void startCameraServer(){
         httpd_register_uri_handler(camera_httpd, &index_uri);
         httpd_register_uri_handler(camera_httpd, &cmd_uri);
         httpd_register_uri_handler(camera_httpd, &status_uri);
-        httpd_register_uri_handler(camera_httpd, &capture_uri);
+        httpd_register_uri_handler(camera_httpd, &checkin_uri);
+        httpd_register_uri_handler(camera_httpd, &checkout_uri);
     }
 
     config.server_port += 1;

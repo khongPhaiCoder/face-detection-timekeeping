@@ -1,0 +1,36 @@
+
+/*heading title*/
+.heading-artilcle{
+    margin-top: 30px;
+    text-align: center;
+}
+
+/*content*/
+.article-date{
+    text-align: right;
+}
+
+article h1:first-child{
+    font-size: 1.5rem;
+}
+
+.body-article{
+    text-align: justify;
+}
+
+.body-article p img{
+    display: block;
+    margin: auto;
+    max-width: 1110px;
+}
+/*footer*/
+.tail-article{
+    display: flex;
+    gap: 16px;
+}
+.tail-article img{
+    border-radius: 9999px;
+    vertical-align: middle;
+    max-width: 32px;
+    max-height: 32px;
+}
