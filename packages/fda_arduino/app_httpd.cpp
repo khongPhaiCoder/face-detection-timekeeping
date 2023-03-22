@@ -39,11 +39,11 @@
 
 
 int ledpin1 = 15;
-// const char *servernameCheckin = "http://192.168.43.198:8080/api/file/checkin";
-// const char *servernameCheckout = "http://192.168.43.198:8080/api/file/checkout";
+const char *servernameCheckin = "http://192.168.43.198:8080/api/file/checkin";
+const char *servernameCheckout = "http://192.168.43.198:8080/api/file/checkout";
 
-const char *servernameCheckin = "http://192.168.1.8:8080/api/file/checkin";
-const char *servernameCheckout = "http://192.168.1.8:8080/api/file/checkout";
+// const char *servernameCheckin = "http://192.168.1.8:8080/api/file/checkin";
+// const char *servernameCheckout = "http://192.168.1.8:8080/api/file/checkout";
 const char *postdata = "&esp32capture";
 String content;
 int ref_x = 110;

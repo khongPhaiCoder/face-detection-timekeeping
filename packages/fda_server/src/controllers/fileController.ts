@@ -8,7 +8,7 @@ class FileController {
       buffers.push(chunk);
     });
     req.on('end', () => {
-      const fileToWrite = `src/public/images/captured-${Date.now()}.jpg`;
+      const fileToWrite = `src/public/anh/captured-${Date.now()}.jpg`;
       const completeBuffer = Buffer.concat(buffers);
       fs.writeFileSync(fileToWrite, completeBuffer);
       if (fs.existsSync(fileToWrite)) {
@@ -27,7 +27,7 @@ class FileController {
       buffers.push(chunk);
     });
     req.on('end', () => {
-      const fileToWrite = `src/public/images/captured-${Date.now()}.jpg`;
+      const fileToWrite = `src/public/anh/captured-${Date.now()}.jpg`;
       const completeBuffer = Buffer.concat(buffers);
       fs.writeFileSync(fileToWrite, completeBuffer);
       if (fs.existsSync(fileToWrite)) {
