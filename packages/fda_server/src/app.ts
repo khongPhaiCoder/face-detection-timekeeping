@@ -16,7 +16,7 @@ import { accessLogStream, connectDatabase, multerConfig } from './configs';
 import { ENVIRONMENT } from './utils/secrets';
 import { ENV } from './constants';
 
-// connectDatabase();
+connectDatabase();
 
 const app = express();
 

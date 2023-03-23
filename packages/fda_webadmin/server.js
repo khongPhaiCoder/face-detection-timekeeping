@@ -16,11 +16,11 @@ const user = require("./routes/user");
 //cnn db
 mongoose.connect(
   "mongodb+srv://khoa:khoa@cluster0.hyxxp.mongodb.net/face-detect",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-  },
+  // {
+  //   useNewUrlParser: true,
+  //   useUnifiedTopology: true,
+  //   useCreateIndex: true,
+  // },
 );
 
 // Set up session middleware

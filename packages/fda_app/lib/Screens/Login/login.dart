@@ -1,18 +1,19 @@
 import 'package:fda_app/Screens/Home/home.dart';
+import 'package:fda_app/data/user/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-void main() {
-  runApp(MaterialApp(
-    theme: ThemeData(primaryColor: Colors.purple),
-    debugShowCheckedModeBanner: false,
-    home: const LoginPage(),
-  ));
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
-
+class _LoginPageState extends State<LoginPage> {
+  String email = "";
+  String password = "";
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,20 +77,26 @@ class LoginPage extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    const SizedBox(
+                    SizedBox(
                       width: 300,
                       child: TextField(
-                        decoration: InputDecoration(
+                        onChanged: (value) {
+                          email = value;
+                        },
+                        decoration: const InputDecoration(
                           labelText: 'Email Address',
                           suffixIcon: Icon(FontAwesomeIcons.envelope),
                         ),
                       ),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       width: 300,
                       child: TextField(
+                        onChanged: (value) {
+                          password = value;
+                        },
                         obscureText: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Password',
                           suffixIcon: Icon(FontAwesomeIcons.eyeSlash),
                         ),
@@ -111,11 +118,17 @@ class LoginPage extends StatelessWidget {
                       height: 20,
                     ),
                     GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Home()),
-                        );
+                      onTap: () async {
+                        setState(() {
+                          loading = true;
+                        });
+                        await UserService().login(email, password);
+                        setState(() {
+                          loading = false;
+                        });
+                        if (UserService().user != null) {
+                          Navigator.pushNamed(context, "/home");
+                        }
                       },
                       child: Container(
                         alignment: Alignment.center,
@@ -130,15 +143,17 @@ class LoginPage extends StatelessWidget {
                                   Color(0xFFE94057),
                                   Color(0xFFF27121),
                                 ])),
-                        child: const Padding(
-                          padding: EdgeInsets.all(12.0),
-                          child: Text(
-                            'Login',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
-                          ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: loading
+                              ? const CircularProgressIndicator()
+                              : const Text(
+                                  'Login',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
                         ),
                       ),
                     ),
