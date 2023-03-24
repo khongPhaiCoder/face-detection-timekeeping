@@ -2,6 +2,7 @@ import 'package:fda_app/Screens/Home/home.dart';
 import 'package:fda_app/data/user/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -16,7 +17,8 @@ class _LoginPageState extends State<LoginPage> {
   bool loading = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return KeyboardDismisser(
+        child: Scaffold(
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height,
@@ -164,6 +166,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
-    );
+    ));
   }
 }
