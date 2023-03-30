@@ -1,7 +1,11 @@
 import 'package:fda_app/Screens/Home/home.dart';
+import 'package:fda_app/data/user/bloc/user_bloc.dart';
 import 'package:fda_app/data/user/user_service.dart';
+import 'package:fda_app/utils/dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:formz/formz.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 
 class LoginPage extends StatefulWidget {
@@ -121,16 +125,8 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        setState(() {
-                          loading = true;
-                        });
-                        await UserService().login(email, password);
-                        setState(() {
-                          loading = false;
-                        });
-                        if (UserService().user != null) {
-                          Navigator.pushNamed(context, "/home");
-                        }
+                        BlocProvider.of<UserBloc>(context)
+                            .add(UserLogin(email, password));
                       },
                       child: Container(
                         alignment: Alignment.center,
@@ -145,18 +141,33 @@ class _LoginPageState extends State<LoginPage> {
                                   Color(0xFFE94057),
                                   Color(0xFFF27121),
                                 ])),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: loading
-                              ? const CircularProgressIndicator()
-                              : const Text(
-                                  'Login',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                        ),
+                        child: BlocConsumer<UserBloc, UserState>(
+                            listener: (context, state) {
+                              if (state.status.isSuccess) {
+                                Navigator.pushNamed(context, "/home");
+                              }
+                              if (state.status.isFailure) {
+                                DialogUtil()
+                                    .showError(context, state.errorMessage);
+                              }
+                            },
+                            buildWhen: (previous, current) =>
+                                previous.status != current.status,
+                            builder: (context, state) {
+                              return Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: state.status ==
+                                        FormzSubmissionStatus.inProgress
+                                    ? const CircularProgressIndicator()
+                                    : const Text(
+                                        'Login',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                              );
+                            }),
                       ),
                     ),
                   ],
