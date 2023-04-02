@@ -1,9 +1,9 @@
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 
-let connectDB = () => {
-  mongoose.connect('mongodb://localhost/blog', {
-    useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true
-})};
+// let connectDB = () => {
+//   mongoose.connect('mongodb://localhost/blog', {
+//     useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true
+// })};
 
-module.exports = connectDB;
+// module.exports = connectDB;
 

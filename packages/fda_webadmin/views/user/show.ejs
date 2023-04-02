@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head'); %>
+</head>
+<body>
+  <header>
+    <%- include('../partials/header'); %>
+  </header>
+  <main>
+    <div class="container">
+      <h2 style="padding-top: 60px;"><%= user[0].name %></h2>
+      <!-- <p><%= user %></p> -->
+      <table class="table">
+        <thead>
+          <tr>
+            <!-- <th scope="col">#</th> -->
+            <th scope="col">Ngày</th>
+            <th scope="col">Trạng thái</th>
+            <th scope="col">Số giờ làm việc</th>
+            <th scope="col">Xem thêm</th>
+
+          </tr>
+        </thead>
+        
+        <tbody>
+          <% listHis.forEach(history => { %>
+            <tr>
+              <!-- <th scope="row">1</th> -->
+              <td><%= history.date %></td>
+              <td><%= history.absent %></td>
+              <td><%= history.time %></td>
+              <td><div class="dropdown">
+                <a class="btn" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                  </svg>
+                </a>
+              
+                <ul class="dropdown-menu">
+                  <!-- <li><a class="dropdown-item" onclick="edit_comment('<%= history._id %>')" >Edit</a></li> -->
+                  <li><a href="" class="dropdown-item" >Chi tiết</a></li>
+                </ul>
+                </div>
+              </td>
+            </tr>
+          <% }) %>  
+        </tbody>
+      </table>
+    </div>
+  </main>
+  
+  
+  
+  <%- include('../partials/footer'); %>
+  
+</body>
+</html>

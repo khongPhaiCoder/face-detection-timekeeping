@@ -2,10 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 // const bcrypt = require('bcrypt')
-const Article = require("./models/article");
-const articleRouter = require("./routes/articles");
 // const initRoutes = require('./routes/loginRoutes.js')
 const User = require("./models/user");
+const Hitories = require("./models/hitories");
 const methodOverride = require("method-override");
 const app = express();
 const path = require("path");
@@ -13,6 +12,8 @@ const port = 3332;
 const session = require("express-session");
 const loginRoutes = require("./routes/signRoutes");
 const user = require("./routes/user");
+const TimeAnalysis = require("./routes/timeAnalysis");
+const { log } = require("console");
 //cnn db
 mongoose.connect(
   "mongodb+srv://khoa:khoa@cluster0.hyxxp.mongodb.net/face-detect",
@@ -32,6 +33,9 @@ app.use(
   }),
 );
 
+//conf static
+app.use(express.static('public'));
+
 // Set up body parsing middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -40,44 +44,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/", loginRoutes);
 
 app.use("/user", user);
+app.use("/timeAnalysis", TimeAnalysis);
 //view
-app.set("views/articles", path.join(__dirname, "views"));
 
 app.set("view engine", "ejs");
 
-// app.get('/public/css/article.css', function(req, res) {
-//   res.setHeader('Content-Type', 'text/css');
-//   res.sendFile(__dirname + '/public/css/article.css');
-// });
-// app.get('/public/css/edit.css', function(req, res) {
-//   res.setHeader('Content-Type', 'text/css');
-//   res.sendFile(__dirname + '/public/css/edit.css');
-// });
-// app.get('/public/css/partials/header.css', function(req, res) {
-//   res.setHeader('Content-Type', 'text/css');
-//   res.sendFile(__dirname + '/public/css/edit.css');
-// });
-// app.get('/public/css/partials/main.css', function(req, res) {
-//   res.setHeader('Content-Type', 'text/css');
-//   res.sendFile(__dirname + '/public/css/edit.css');
-// });
-// app.get('/public/css/login.css', function(req, res) {
-//   res.setHeader('Content-Type', 'text/css');
-//   res.sendFile(__dirname + '/public/css/login.css');
-// });
-
-// console.log("aabc",path.join(__dirname + '/public/css/edit.css'));
-//app conf
-// app.use(express.urlencoded({ extended: false }))
-// app.use(methodOverride('_method'))
-// app.use(express.static(path.join(__dirname,'public')))
-// app.use(bodyParser.urlencoded({extended: true}));
-// loginRoutes(app);
-
 app.get("/listUser", async (req, res) => {
-  let listUser = await User.find();
+  let listUser = await User.find({role: 'staff'});
   let list = JSON.stringify(listUser);
-  console.log("list", list.length);
+  // console.log("list", listUser[1].role);
   res.render("users/listUser", { list: list });
 });
 
@@ -99,16 +74,24 @@ app.get("/register", async (req, res) => {
 
 app.get("/dashboard", async (req, res) => {
   const userId = req.session.userId;
-  console.log("id: ", userId);
-  let articles = await Article.find({
-    $or: [{ User: req.session.userId }, { User: null }],
-  })
-    // .find({User:null})
-    .sort({ createdAt: "desc" });
-  res.render("articles/index", { articles: articles });
+  let users = await User.find({role:"staff"})
+  
+  // console.log(his,"kkk");
+  for(let i=0;i<users.length;i++){
+    let his = await Hitories.find({user:users[i]._id});
+    let total_time = his.reduce((acc, obj) => {
+      console.log(obj.time,"time");
+      return acc + parseInt(obj.time);
+    }, 0);
+    console.log("ttt",total_time);
+    (users[i]).his_list = his;
+    (users[i]).time = total_time;
+  }
+
+  // console.log("id: ", users);
+  res.render("user/index",{users});
 });
 
-app.use("/articles", articleRouter);
 
 app.listen(port, () => {
   console.log(`port ${port}`);

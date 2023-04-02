@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head'); %>
+</head>
+<body>
+  <header>
+    <%- include('../partials/header'); %>
+  </header>
+  <main>
+    <div class="container">
+      <h2>Top nhân viên</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <!-- <th scope="col">#</th> -->
+            <th scope="col">Tên nhân viên</th>
+            <th scope="col">Email</th>
+            <th scope="col">Số giờ làm việc</th>
+            <th scope="col">Xem thêm</th>
+
+          </tr>
+        </thead>
+        
+        <tbody>
+          <% users.forEach(user => { %>
+            <tr>
+              <!-- <th scope="row">1</th> -->
+              <td><%= user.name %></td>
+              <td><%= user.email %></td>
+              <td><%= user.time %></td>
+              <td><div class="dropdown">
+                <a class="btn" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                  </svg>
+                </a>
+              
+                <ul class="dropdown-menu">
+                  <!-- <li><a class="dropdown-item" onclick="edit_comment('<%= user._id %>')" >Edit</a></li> -->
+                  <li><a href="/timeAnalysis/detail/<%= user._id %>" class="dropdown-item" >Chi tiết</a></li>
+                </ul>
+                </div>
+              </td>
+            </tr>
+            <!-- <tr>
+              <th scope="row">2</th>
+              <td>Jacob</td>
+              <td>Thornton@gmail.com</td>
+              <td>130</td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>Larry the Bird</td>
+              <td>Bird@gmail.com</td>
+              <td>127</td>
+            </tr> -->
+          <% }) %>  
+        </tbody>
+      </table>
+      <p><%= users %></p>
+    </div>
+  </main>
+  
+  
+  
+  <%- include('../partials/footer'); %>
+  
+</body>
+</html>

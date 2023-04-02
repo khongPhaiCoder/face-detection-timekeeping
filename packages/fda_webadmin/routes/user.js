@@ -19,26 +19,34 @@ router.get('/edit/:id', async (req, res) => {
 });
 
 router.post('/edit/:id', async (req, res) => {
-    let id = req.params.id;
-    let user = await User.find({_id: id}).update(
-        [
-            {
-                $set: {
-                    name: req.body.name,
-                    email : req.body.email
+    let user_id = req.params.id;
+    let admin_id = req.session.userId;
+    // console.log(req.session.userId,"ppp");
+    let current_account = await User.find({_id: admin_id})
+    if (current_account[0].role === 'admin'){
+        await User.find({_id: user_id})
+        .update(
+            [
+                {
+                    $set: {
+                        name: req.body.name,
+                        email : req.body.email
+                    }
                 }
-            }
-        ]
-    )
+            ]
+        )
+    }
 
     res.redirect('/listUser');
   });
 router.post('/delete/:id', async (req, res) => {
-    let id = req.params.id;
-    let user = req.session.id
-    console.log(user);
-await User.findByIdAndDelete(req.params.id)
-console.log(req.params.id,"ddd");
+    let user_id = req.params.id;
+    let admin_id = req.session.userId;
+    // console.log(req.session.userId,"ppp");
+    let current_account = await User.find({_id: admin_id})
+    if (current_account[0].role === 'admin'){
+        await User.findByIdAndDelete(user_id)
+    }
 res.redirect('/listUser')
 })
 

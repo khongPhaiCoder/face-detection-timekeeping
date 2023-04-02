@@ -41,7 +41,8 @@ router.post('/login', async (req, res) => {
 router.post('/register', async (req, res) => {
   console.log(req.body,"avvv");
   const { name, email, password } = req.body;
-  const login = new User({ name, email, password });
+  const role = 'staff';
+  const login = new User({ name, email, password, role });
   await login.save();
   res.redirect(`/`);
 });
