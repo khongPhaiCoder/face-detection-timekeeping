@@ -10,7 +10,7 @@ class HttpService {
 
   HttpService._privateConstructor() {
     _dio = Dio(BaseOptions(
-        baseUrl: 'http://192.168.1.15:8080/api/', headers: header()));
+        baseUrl: 'http://192.168.1.19:8080/api/', headers: header()));
     initInterceptors();
   }
 

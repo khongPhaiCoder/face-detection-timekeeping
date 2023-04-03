@@ -12,7 +12,7 @@ class HistoryController {
       //   startAt: 0,
       // });
       // servo.to(180);
-      // board.wait(10000, () => {
+      // board.wait(1000, () => {
       //   servo.to(0);
       // });
       const { user } = req.body;
