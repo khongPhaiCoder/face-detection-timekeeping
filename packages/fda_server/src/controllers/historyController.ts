@@ -3,6 +3,8 @@ import History from '../models/history';
 import board from '../index';
 import { HistoryType } from '../types/enum.types';
 import five from 'johnny-five';
+import { sendNotification } from '../configs/firebase.config';
+import User from '../models/user';
 
 class HistoryController {
   public static async checkin(req: Request, res: Response) {
@@ -15,17 +17,18 @@ class HistoryController {
       // board.wait(1000, () => {
       //   servo.to(0);
       // });
-      const { user } = req.body;
+      const { userId } = req.body;
 
       const currentDate = new Date();
       const formattedDate = currentDate.toLocaleDateString('en-GB');
       const currentHour = currentDate.getHours();
       const currentMinute = currentDate.getMinutes();
+      var type = 1;
       const time = `${currentHour}:${currentMinute < 10 ? '0' + currentMinute : currentMinute}`;
-      const result = await History.findOne({ user: user, date: formattedDate });
+      const result = await History.findOne({ user: userId, date: formattedDate });
       if (result == null) {
         const history = new History({
-          user: user,
+          user: userId,
           date: formattedDate,
           hitories: {
             time: time,
@@ -38,6 +41,8 @@ class HistoryController {
           time: time,
           status: result.hitories.length % 2 == 0 ? HistoryType.CHECKIN : HistoryType.CHECKOUT,
         });
+        if (result.hitories.length % 2 == 1) type = 2;
+
         var countMinute = 0;
         var startHour = 0;
         var startMinute = 0;
@@ -60,6 +65,25 @@ class HistoryController {
         result.time = countMinute;
         await result.save();
       }
+      const user = await User.findById(userId);
+
+      user.token.forEach((e) => {
+        var message = {
+          to: e,
+          notification: {
+            title: type == 1 ? 'Bạn đã điểm danh vào thành công' : 'Bạn đã xin ra thành công',
+            body: 1 ? 'Bạn đã điểm danh vào thành công' : 'Bạn đã xin ra thành công',
+          },
+
+          data: {
+            //you can send only notification or only data(or include both)
+            title: 'ok cdfsdsdfsd',
+            body: '{"name" : "okg ooggle ogrlrl","product_id" : "123","final_price" : "0.00035"}',
+          },
+        };
+        sendNotification(message);
+      });
+
       res.status(200).send({
         message: 'Success',
       });
@@ -81,10 +105,10 @@ class HistoryController {
         else numberOfAttendance++;
       });
       res.status(200).send({
-        hitories: result,
-        numberOfAbsent: numberOfAbsent,
-        numberOfUnknow: numberOfUnknow,
-        numberOfAttendance: numberOfAttendance,
+        data: result,
+        numOfAbsent: numberOfAbsent,
+        numOfUnknow: numberOfUnknow,
+        numOfAttendance: numberOfAttendance,
       });
     } catch (error) {
       res.status(400).send(error);

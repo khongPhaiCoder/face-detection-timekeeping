@@ -1,130 +1,78 @@
+import 'package:fda_app/data/home/bloc/home_bloc.dart';
+import 'package:fda_app/widgets/LoadingScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 
-class History extends StatelessWidget {
-  const History({super.key});
+class History extends StatefulWidget {
+  const History({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.black87,
-        body: SafeArea(
-            child: Center(
-          child: MyStatelessWidget(),
-        )),
-      ),
-    );
-  }
+  _HistoryState createState() => _HistoryState();
 }
 
-class MyStatelessWidget extends StatelessWidget {
-  const MyStatelessWidget({super.key});
-
+class _HistoryState extends State<History> {
   @override
   Widget build(BuildContext context) {
-    return DataTable(
-      headingRowColor:
-          MaterialStateProperty.resolveWith((states) => Colors.deepOrange),
-      dataRowColor: MaterialStateProperty.resolveWith((states) => Colors.green),
-      columns: const <DataColumn>[
-        DataColumn(
-          label: Expanded(
-            child: Text(
-              'Ngày',
-              style: TextStyle(fontStyle: FontStyle.italic),
+    return BlocBuilder<HomeBloc, HomeState>(
+        buildWhen: (previous, current) => previous.status != current.status,
+        builder: ((context, state) {
+          if (state.status == FormzSubmissionStatus.inProgress) {
+            return LoadingScreen();
+          }
+          return MaterialApp(
+            home: Scaffold(
+              backgroundColor: Colors.black87,
+              body: Container(
+                  child: Center(
+                child: DataTable(
+                  headingRowColor: MaterialStateProperty.resolveWith(
+                      (states) => Colors.deepOrange),
+                  dataRowColor: MaterialStateProperty.resolveWith(
+                      (states) => Colors.green),
+                  columns: const <DataColumn>[
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          'Ngày',
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          'Trạng thái',
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          'Số giờ ',
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                    ),
+                  ],
+                  rows: <DataRow>[
+                    ...BlocProvider.of<HomeBloc>(context).state.historyList.map(
+                          (e) => DataRow(
+                            cells: <DataCell>[
+                              DataCell(Text(e.date.toString())),
+                              DataCell(Text(e.absent == 'none'
+                                  ? 'Attendance'
+                                  : e.absent.toString())),
+                              DataCell(Text(e.time.toString())),
+                            ],
+                          ),
+                        ),
+                  ],
+                ),
+              )),
             ),
-          ),
-        ),
-        DataColumn(
-          label: Expanded(
-            child: Text(
-              'Vào',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
-          ),
-        ),
-        DataColumn(
-          label: Expanded(
-            child: Text(
-              'Ra',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
-          ),
-        ),
-      ],
-      rows: const <DataRow>[
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('25/10/2023')),
-            DataCell(Text('9:00')),
-            DataCell(Text('11:30')),
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('24/10/2023')),
-            DataCell(Text('9:00')),
-            DataCell(Text('11:30')),
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('23/10/2023')),
-            DataCell(Text('9:00')),
-            DataCell(Text('11:30')),
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('22/10/2023')),
-            DataCell(Text('9:00')),
-            DataCell(Text('11:30')),
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('21/10/2023')),
-            DataCell(Text('9:00')),
-            DataCell(Text('11:30')),
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('20/10/2023')),
-            DataCell(Text('Absent')),
-            DataCell(Text('Absent')),
-          ],
-          color: MaterialStatePropertyAll(Colors.yellow),
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('19/10/2023')),
-            DataCell(Text('9:00')),
-            DataCell(Text('11:30')),
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('18/10/2023')),
-            DataCell(Text('13:30')),
-            DataCell(Text('17:30')),
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('18/10/2023')),
-            DataCell(Text('9:00')),
-            DataCell(Text('11:30')),
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('17/10/2023')),
-            DataCell(Text('9:00')),
-            DataCell(Text('11:30')),
-          ],
-        ),
-      ],
-    );
+          );
+        }));
   }
 }
