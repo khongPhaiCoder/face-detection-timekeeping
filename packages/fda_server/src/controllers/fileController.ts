@@ -4,11 +4,13 @@ class FileController {
   public static checkin(req: Request, res: Response) {
     // do something
     const buffers: any = [];
+
     req.on('data', (chunk) => {
       buffers.push(chunk);
     });
+
     req.on('end', () => {
-      const fileToWrite = `src/public/anh/captured-${Date.now()}.jpg`;
+      const fileToWrite = `src/public/test/captured-${Date.now()}.jpg`;
       const completeBuffer = Buffer.concat(buffers);
       fs.writeFileSync(fileToWrite, completeBuffer);
       if (fs.existsSync(fileToWrite)) {
