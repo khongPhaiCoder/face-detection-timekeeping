@@ -17,11 +17,11 @@ const { log } = require("console");
 //cnn db
 mongoose.connect(
   "mongodb+srv://khoa:khoa@cluster0.hyxxp.mongodb.net/face-detect",
-  // {
-  //   useNewUrlParser: true,
-  //   useUnifiedTopology: true,
-  //   useCreateIndex: true,
-  // },
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  },
 );
 
 // Set up session middleware
@@ -34,7 +34,7 @@ app.use(
 );
 
 //conf static
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 // Set up body parsing middleware
 app.use(express.json());
@@ -50,7 +50,7 @@ app.use("/timeAnalysis", TimeAnalysis);
 app.set("view engine", "ejs");
 
 app.get("/listUser", async (req, res) => {
-  let listUser = await User.find({role: 'staff'});
+  let listUser = await User.find({ role: "staff" });
   let list = JSON.stringify(listUser);
   // console.log("list", listUser[1].role);
   res.render("users/listUser", { list: list });
@@ -74,24 +74,23 @@ app.get("/register", async (req, res) => {
 
 app.get("/dashboard", async (req, res) => {
   const userId = req.session.userId;
-  let users = await User.find({role:"staff"})
-  
+  let users = await User.find({ role: "staff" });
+
   // console.log(his,"kkk");
-  for(let i=0;i<users.length;i++){
-    let his = await Hitories.find({user:users[i]._id});
+  for (let i = 0; i < users.length; i++) {
+    let his = await Hitories.find({ user: users[i]._id });
     let total_time = his.reduce((acc, obj) => {
-      console.log(obj.time,"time");
+      console.log(obj.time, "time");
       return acc + parseInt(obj.time);
     }, 0);
-    console.log("ttt",total_time);
-    (users[i]).his_list = his;
-    (users[i]).time = total_time;
+    console.log("ttt", total_time);
+    users[i].his_list = his;
+    users[i].time = total_time;
   }
 
   // console.log("id: ", users);
-  res.render("user/index",{users});
+  res.render("user/index", { users });
 });
-
 
 app.listen(port, () => {
   console.log(`port ${port}`);
