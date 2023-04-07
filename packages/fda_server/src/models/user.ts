@@ -5,6 +5,9 @@ const userSchema = new Schema({
   username: { type: Schema.Types.String, required: false },
   email: { type: Schema.Types.String, required: false },
   password: { type: Schema.Types.String, required: true },
+  token: [Schema.Types.String],
+  faceDescriptors: { type: Object, required: false },
+  imageTraining: [{ type: String, required: false }],
   // status: Joi.string().valid('staff', 'admin', {
   //   _mongoose: { default: 'staff' },
   // }),

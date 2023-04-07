@@ -14,7 +14,7 @@ const historySchema = new Schema({
     default: 'none',
   },
   date: { type: Schema.Types.String, required: false },
-  time: { type: Schema.Types.String, required: false },
+  time: { type: Schema.Types.String, required: false, default: '0' },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',

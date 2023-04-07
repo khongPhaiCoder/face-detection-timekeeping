@@ -1,0 +1,150 @@
+{
+  "project_info": {
+    "project_number": "181909110112",
+    "project_id": "cora-app-9b56f",
+    "storage_bucket": "cora-app-9b56f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181909110112:android:9722eecc775cf8bd20f205",
+        "android_client_info": {
+          "package_name": "com.example.cora_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "181909110112-4cbg3c7tdn5clof9420c9f8l17jvp97g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cora_app",
+            "certificate_hash": "d66d4af188ff552daf24300cde532b0a582053cb"
+          }
+        },
+        {
+          "client_id": "181909110112-kpns7aomfrfifc2uemp1tcn9kbfh9ogb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cora_app",
+            "certificate_hash": "3a8c6539e6779c94b59477375288d0d6d5d78fae"
+          }
+        },
+        {
+          "client_id": "181909110112-kt06if82iif9ijcfe04fkskvmiqnr2s3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNOAbm2I3SZt2KZDfiv_EqfXBD699izm8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "181909110112-kt06if82iif9ijcfe04fkskvmiqnr2s3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "181909110112-014dvd8kt0b9lr3go5mnnv3c178t73qe.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sela.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181909110112:android:4277dc5838b1e1ed20f205",
+        "android_client_info": {
+          "package_name": "com.example.fda_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "181909110112-kt06if82iif9ijcfe04fkskvmiqnr2s3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNOAbm2I3SZt2KZDfiv_EqfXBD699izm8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "181909110112-kt06if82iif9ijcfe04fkskvmiqnr2s3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "181909110112-014dvd8kt0b9lr3go5mnnv3c178t73qe.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sela.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181909110112:android:ee2c988d9bd863d220f205",
+        "android_client_info": {
+          "package_name": "com.sela.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "181909110112-0tajb086utqggvhf1korignnafdsmmj3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sela.app",
+            "certificate_hash": "d66d4af188ff552daf24300cde532b0a582053cb"
+          }
+        },
+        {
+          "client_id": "181909110112-ad7angacvkr0e3ujpnfhfmbpb8t21b28.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sela.app",
+            "certificate_hash": "3a8c6539e6779c94b59477375288d0d6d5d78fae"
+          }
+        },
+        {
+          "client_id": "181909110112-kt06if82iif9ijcfe04fkskvmiqnr2s3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNOAbm2I3SZt2KZDfiv_EqfXBD699izm8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "181909110112-kt06if82iif9ijcfe04fkskvmiqnr2s3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "181909110112-014dvd8kt0b9lr3go5mnnv3c178t73qe.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sela.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
