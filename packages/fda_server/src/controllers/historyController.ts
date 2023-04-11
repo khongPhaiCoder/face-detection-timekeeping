@@ -14,20 +14,15 @@ class HistoryController {
       req.on('data', (chunk) => {
         buffers.push(chunk);
       });
-
+     
       let labels: any[] = [];
       req.on('end', async () => {
+
         const completeBuffer = Buffer.concat(buffers);
 
         if (completeBuffer) {
-          // const servo = new five.Servo({
-          //   pin: 9,
-          //   startAt: 0,
-          // });
-          // servo.to(180);
-          // board.wait(1000, () => {
-          //   servo.to(0);
-          // });
+      console.log(completeBuffer);
+          
 
           labels = await detectFace(completeBuffer);
           if (labels.length > 0) {
@@ -107,6 +102,14 @@ class HistoryController {
             });
           }
         }
+        const servo = new five.Servo({
+            pin: 9,
+            startAt: 0,
+          });
+          servo.to(180);
+          board.wait(1000, () => {
+            servo.to(0);
+          });
         res.status(200).send({
           message: 'Success',
         });
