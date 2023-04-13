@@ -40,7 +40,8 @@
 
 int ledpin1 = 15;
 const char *servernameCheckin = "http://192.168.43.198:8080/api/history/checkin";
-const char *servernameCheckout = "http://192.168.43.198:8080/api/file/checkout";
+// const char *servernameCheckin = "http://192.168.1.20:9001/api/auth/detect";
+// const char *servernameCheckout = "http://192.168.43.198:8080/api/file/checkout";
 
 // const char *servernameCheckin = "http://192.168.1.8:8080/api/file/checkin";
 // const char *servernameCheckout = "http://192.168.1.8:8080/api/file/checkout";

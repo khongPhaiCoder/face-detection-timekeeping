@@ -21,9 +21,7 @@ class HistoryController {
         const completeBuffer = Buffer.concat(buffers);
 
         if (completeBuffer) {
-      console.log(completeBuffer);
-          
-
+          console.log(completeBuffer);
           labels = await detectFace(completeBuffer);
           if (labels.length > 0) {
             const listUserDetect: any[] = [];
@@ -35,6 +33,7 @@ class HistoryController {
             }
 
             labels.forEach(async (userId) => {
+              if (userId != 'unknown') {
               const currentDate = new Date();
               const formattedDate = currentDate.toLocaleDateString('en-GB');
               const currentHour = currentDate.getHours();
@@ -57,7 +56,7 @@ class HistoryController {
                   time: time,
                   status: result.hitories.length % 2 == 0 ? HistoryType.CHECKIN : HistoryType.CHECKOUT,
                 });
-                if (result.hitories.length % 2 == 1) type = 2;
+                if (result.hitories.length % 2 == 0) type = 2;
 
                 var countMinute = 0;
                 var startHour = 0;
@@ -88,7 +87,7 @@ class HistoryController {
                   to: e,
                   notification: {
                     title: type == 1 ? 'Bạn đã điểm danh vào thành công' : 'Bạn đã xin ra thành công',
-                    body: 1 ? 'Bạn đã điểm danh vào thành công' : 'Bạn đã xin ra thành công',
+                    body: type== 1 ? 'Bạn đã điểm danh vào thành công' : 'Bạn đã xin ra thành công',
                   },
 
                   data: {
@@ -98,18 +97,20 @@ class HistoryController {
                   },
                 };
                 sendNotification(message);
+                const servo = new five.Servo({
+                  pin: 9,
+                  startAt: 0,
+                });
+                servo.to(180);
+                board.wait(1000, () => {
+                  servo.to(0);
+                });
               });
-            });
+            }}
+            );
           }
         }
-        const servo = new five.Servo({
-            pin: 9,
-            startAt: 0,
-          });
-          servo.to(180);
-          board.wait(1000, () => {
-            servo.to(0);
-          });
+        
         res.status(200).send({
           message: 'Success',
         });
