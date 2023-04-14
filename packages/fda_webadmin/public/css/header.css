@@ -1,7 +1,21 @@
+header {
+  position: fixed;
+}
 header nav .container-fluid #navbarSupportedContent .navbar-nav .nav-item a {
-    /* color: aqua; */
+  /* color: aqua; */
 }
 
-header nav .container-fluid #navbarSupportedContent .navbar-nav .nav-item a:hover{
-    color: #C19898;
+header
+  nav
+  .container-fluid
+  #navbarSupportedContent
+  .navbar-nav
+  .nav-item
+  a:hover {
+  color: #c19898;
+}
+
+footer {
+  position: fixed;
+  width: 100%;
 }

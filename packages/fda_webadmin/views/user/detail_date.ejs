@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+  <body>
+    <header><%- include('../partials/header'); %></header>
+    <main>
+      <div class="container">
+        <h2 style="padding-top: 60px"><%= user[0].name %></h2>
+        <h4><i><%=his[0].date%></i></h4>
+        <!-- <p><%= user %></p> -->
+        <table class="table">
+          <thead>
+            <tr>
+              <!-- <th scope="col">#</th> -->
+              <th scope="col">Giờ</th>
+              <th scope="col">Trạng thái</th>
+            </tr>
+            <!-- <tr>
+              <td class="input-table">
+                <input type="text" placeholder="Type to Filter..." />
+              </td>
+              <td class="input-table">
+                <input type="text" placeholder="Type to Filter..." />
+              </td>
+              <td class="input-table">
+                <input type="text" placeholder="Type to Filter..." />
+              </td>
+              <td></td>
+            </tr> -->
+          </thead>
+
+          <tbody>
+            <% his[0].hitories.forEach(history => { %>
+            <tr>
+              <!-- <th scope="row">1</th> -->
+              <td><%= history.time %></td>
+
+              <td>
+                <% if (history.status ==='CHECKIN') { %>
+                <strong><%= history.status %></strong>
+                <% } else {%>
+                <i><%= history.status %></i>
+                <% } %>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <!-- <%- include('../partials/footer'); %> -->
+  </body>
+</html>

@@ -8,7 +8,7 @@ const Hitories = require("./models/hitories");
 const methodOverride = require("method-override");
 const app = express();
 const path = require("path");
-const port = 3332;
+const port = 3337;
 const session = require("express-session");
 const loginRoutes = require("./routes/signRoutes");
 const user = require("./routes/user");
@@ -21,7 +21,7 @@ mongoose.connect(
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-  },
+  }
 );
 
 // Set up session middleware
@@ -30,7 +30,7 @@ app.use(
     secret: "mysecretkey",
     resave: false,
     saveUninitialized: false,
-  }),
+  })
 );
 
 //conf static
@@ -73,21 +73,31 @@ app.get("/register", async (req, res) => {
 });
 
 app.get("/dashboard", async (req, res) => {
-  const userId = req.session.userId;
+  let userId = req.session.userId;
   let users = await User.find({ role: "staff" });
 
-  // console.log(his,"kkk");
   for (let i = 0; i < users.length; i++) {
-    let his = await Hitories.find({ user: users[i]._id });
-    let total_time = his.reduce((acc, obj) => {
-      console.log(obj.time, "time");
-      return acc + parseInt(obj.time);
-    }, 0);
+    let his = await Hitories.find({ user: users[i]._id }).select("time");
+
+    let total_time = 0;
+    for (let j = 0; j < his.length; j++) {
+      if (his[j].time != undefined) {
+        total_time += parseInt(his[j].time);
+        console.log("tia", parseInt(his[j].time), total_time);
+      }
+    }
     console.log("ttt", total_time);
     users[i].his_list = his;
     users[i].time = total_time;
+    // console.log("his", his, "ll", users[i]);
   }
 
+  users.sort(function (a, b) {
+    return b.time - a.time;
+  });
+  for (let index = 0; index < users.length; index++) {
+    console.log(users[index].time, ">>>");
+  }
   // console.log("id: ", users);
   res.render("user/index", { users });
 });
