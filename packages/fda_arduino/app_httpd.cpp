@@ -39,8 +39,9 @@
 
 
 int ledpin1 = 15;
-const char *servernameCheckin = "http://192.168.43.198:8080/api/file/checkin";
-const char *servernameCheckout = "http://192.168.43.198:8080/api/file/checkout";
+const char *servernameCheckin = "http://192.168.43.198:8080/api/history/checkin";
+// const char *servernameCheckin = "http://192.168.1.20:9001/api/auth/detect";
+// const char *servernameCheckout = "http://192.168.43.198:8080/api/file/checkout";
 
 // const char *servernameCheckin = "http://192.168.1.8:8080/api/file/checkin";
 // const char *servernameCheckout = "http://192.168.1.8:8080/api/file/checkout";
@@ -377,7 +378,7 @@ static esp_err_t checkout_handler(httpd_req_t *req ){
   esp_http_client_handle_t http_client;
   
   esp_http_client_config_t config_client = {0};
-  config_client.url = servernameCheckout;
+  config_client.url = servernameCheckin;
   config_client.event_handler = _http_event_handler;
   config_client.method = HTTP_METHOD_POST;
   

@@ -13,3 +13,18 @@ class FetchHome extends HomeEvent {
   @override
   List<Object?> get props => [id];
 }
+
+class setTimeWhen extends HomeEvent {
+  final String text;
+  const setTimeWhen(this.text);
+
+  @override
+  List<Object?> get props => [text];
+}
+
+class ClearTime extends HomeEvent {
+  const ClearTime();
+
+  @override
+  List<Object?> get props => [];
+}

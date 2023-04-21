@@ -1081,7 +1081,6 @@ char index_html[]  = R"rawliteral(
     </div>
     <div id="buttons">
       <button id="capture-btn-in">Điểm danh</button>
-      <button id="capture-btn-out">Xin ra</button>
       <button id="record-btn">Quay video</button>
     </div>
     <p>Camera position (x): <span id="servopositionx" type ="number" ></span></p>
@@ -1220,7 +1219,6 @@ char index_html[]  = R"rawliteral(
         const view = document.getElementById('stream');
         const viewContainer = document.getElementById('stream-container');
         const checkinButton = document.getElementById('capture-btn-in');
-        const checkoutButton = document.getElementById('capture-btn-out');
         const streamButton = document.getElementById('record-btn');
         const enrollButton = document.getElementById('face_enroll');
         const closeButton = document.getElementById('close-stream');
@@ -1249,12 +1247,7 @@ char index_html[]  = R"rawliteral(
           show(viewContainer);
         };
 
-        // Attach actions to buttons
-        checkoutButton.onclick = () => {
-          stopStream();
-          view.src = `${baseHost}/checkout?$${Date.now()}`;
-          show(viewContainer);
-        };
+     
 
         closeButton.onclick = () => {
           stopStream();
