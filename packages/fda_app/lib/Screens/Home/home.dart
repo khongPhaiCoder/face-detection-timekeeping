@@ -179,6 +179,8 @@ class _HomeState extends State<Home> {
                   ),
                   GestureDetector(
                     onTap: () {
+                      BlocProvider.of<HomeBloc>(context)
+                                            .add(ClearTime());
                       Navigator.push(
                         context,
                         MaterialPageRoute(
