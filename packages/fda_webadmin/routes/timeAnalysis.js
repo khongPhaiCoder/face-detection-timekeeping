@@ -13,6 +13,35 @@ router.get("/detail/:id", async (req, res) => {
   res.render("user/show", { listHis, user });
 });
 
+router.get("/month/:id", async (req, res) => {
+  let id = req.params.id;
+  // console.log("id pp", id);
+  let now = new Date();
+  let currentMonth = now.getMonth() + 1;
+  let currentYear = now.getFullYear();
+  monthYear = currentMonth + "/" + currentYear;
+  console.log(monthYear, "myyyy");
+  let user = await User.findById(id);
+  console.log(user.salaryBase, "dasgaihjgi");
+  let listH = await Hitories.find({ user: id });
+  let monthlyHour = 0;
+  let listHis = [];
+  for (let i = 0; i < listH.length; i++) {
+    month = listH[i].date.slice(3, 5);
+    year = listH[i].date.slice(6, 12);
+    // console.log(listH[i], "lkhjavvvv");
+    if (month == currentMonth && year == currentYear) {
+      // console.log(Number(listHis[i].time), "number");
+      monthlyHour += Number(listH[i].time);
+      listHis.push(listH[i]);
+    }
+    console.log(monthlyHour, "mhourr");
+    // console.log(year, "lkjhdaasss", month == currentMonth);
+  }
+  // console.log("hdate", date);
+  res.render("user/monthly", { listHis, user, monthlyHour });
+});
+
 router.get("/date/:id", async (req, res) => {
   let id = req.params.id;
   console.log("id pp", id);

@@ -10,59 +10,113 @@
       <input type="password" name="password" id="password"> </br> </br>
       <input type="submit" value="Login">
     </form> -->
-    <section id="section-basic-example">
-        <section class="pb-4">
-            <div class="bg-white border rounded-5">
-              
-              <section class="w-100 p-4 d-flex justify-content-center pb-4">
-                <div style="width: 26rem;">
-                  <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
+    <div class="container">
 
-                    <li class="nav-item" role="presentation">
-                      <a class="nav-link" id="tab-register" data-mdb-toggle="pill" href="#pills-register" role="tab" aria-controls="pills-register" aria-selected="true" tabindex="-1">Edit User</a>
-                    </li>
-                  </ul>
-          
-                  
-                    <div class="tab-pane " id="pills-register" role="tabpanel" aria-labelledby="tab-register">
-                      <form action="/user/edit/<%=user[0]._id %>" method="POST">
-                        <div class="text-center mb-3">
+      <form action="/user/edit/<%=user[0]._id %>" method="POST">
+  <fieldset>
+  
+  <!-- Form Name -->
+  <legend>Edit user</legend>
+  
+  <!-- Text input-->
+  
+  <div class="form-group">
+    <label class="col-md-4 control-label">Name</label>  
+    <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+    <input  name="name" value ="<%= user[0].name %>"   placeholder="<%= user[0].name %>" class="form-control"  type="text">
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- Text input-->
+         <div class="form-group">
+    <label class="col-md-4 control-label">Email</label>  
+      <div class="col-md-4 inputGroupContainer">
+      <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+    <input name="email" value ="<%= user[0].email %>" placeholder="<%= user[0].email %>" class="form-control"  type="text">
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- Text input-->
+         
+  <div class="form-group">
+    <label class="col-md-4 control-label">Salary Base</label>  
+      <div class="col-md-4 inputGroupContainer">
+      <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
+    <input name="salaryBase" value ="<%= user[0].salaryBase %>" placeholder="<%= user[0].salaryBase %>" class="form-control" type="text">
+      </div>
+    </div>
+  </div>
+  
+  <!-- Text input-->
+        
+  <!-- <div class="form-group">
+    <label class="col-md-4 control-label">Address</label>  
+      <div class="col-md-4 inputGroupContainer">
+      <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
+    <input name="address" placeholder="Address" class="form-control" type="text">
+      </div>
+    </div>
+  </div> -->
+  
+  <!-- Text input-->
+   
+  
+  <!-- Select Basic -->
+     
+  <!-- <div class="form-group"> 
+    <label class="col-md-4 control-label">State</label>
+      <div class="col-md-4 selectContainer">
+      <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-list"></i></span>
+      <select name="state" class="form-control selectpicker" >
+        <option value=" " >Please select your state</option>
+        <option>Alabama</option>
+        
+      </select>
+    </div>
+  </div>
+  </div> -->
+  
+  <!-- radio checks -->
+   <!-- <div class="form-group">
+                          <label class="col-md-4 control-label">Do you have hosting?</label>
+                          <div class="col-md-4">
+                              <div class="radio">
+                                  <label>
+                                      <input type="radio" name="hosting" value="yes" /> Yes
+                                  </label>
+                              </div>
+                              <div class="radio">
+                                  <label>
+                                      <input type="radio" name="hosting" value="no" /> No
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+   -->
+  
+  
+  <!-- Button -->
+  <div class="form-group">
+    <label class="col-md-4 control-label"></label>
+    <div class="col-md-4">
+      <button type="submit" class="btn btn-warning" >Send <span class="glyphicon glyphicon-send"></span></button>
+    </div>
+  </div>
+  
+  </fieldset>
+  </form>
+  </div>
+      </div><!-- /.container -->
 
-          
-                        <div class="form-outline mb-4">
-                          <input type="text" id="registerName" class="form-control" name="name" value= "<%= user[0].name %>">
-                          <label class="form-label" for="registerName" style="margin-left: 0px;">Name</label>
-                        <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 8px;"></div><div class="form-notch-trailing"></div></div></div>
-          
-                        <!-- <div class="form-outline mb-4">
-                          <input type="text" id="registerUsername" class="form-control">
-                          <label class="form-label" name="username" for="registerUsername" style="margin-left: 0px;" >Username</label>
-                        <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 8px;"></div><div class="form-notch-trailing"></div></div></div>
-           -->
-                        <div class="form-outline mb-4">
-                          <input type="email" id="registerEmail" class="form-control" name="email" value= "<%= user[0].email %>">
-                          <label class="form-label" for="registerEmail" style="margin-left: 0px;">Email</label>
-                        <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 8px;"></div><div class="form-notch-trailing"></div></div></div>
-          
-                        <!-- <div class="form-outline mb-4">
-                          <input type="password" id="registerPassword" class="form-control" name="password">
-                          <label class="form-label" for="registerPassword" style="margin-left: 0px;">Password</label>
-                        <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 8px;"></div><div class="form-notch-trailing"></div></div></div>
-          
-                        <div class="form-outline mb-4">
-                          <input type="password" id="registerRepeatPassword" class="form-control">
-                          <label class="form-label" for="registerRepeatPassword" style="margin-left: 0px;">Repeat password</label>
-                        <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 8px;"></div><div class="form-notch-trailing"></div></div></div> -->
-          
-          
-                        <button type="submit" class="btn btn-primary btn-block mb-3">Sign in</button>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </section>
-          
-            </div>
-          </section>
       </section>
 </body>

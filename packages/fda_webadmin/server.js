@@ -51,6 +51,8 @@ app.set("view engine", "ejs");
 
 app.get("/listUser", async (req, res) => {
   let listUser = await User.find({ role: "staff" });
+  // let listUser = await User.find();
+
   let list = JSON.stringify(listUser);
   // console.log("list", listUser[1].role);
   res.render("users/listUser", { list: list });
@@ -75,6 +77,7 @@ app.get("/register", async (req, res) => {
 app.get("/dashboard", async (req, res) => {
   let userId = req.session.userId;
   let users = await User.find({ role: "staff" });
+  // let users = await User.find();
 
   for (let i = 0; i < users.length; i++) {
     let his = await Hitories.find({ user: users[i]._id }).select("time");

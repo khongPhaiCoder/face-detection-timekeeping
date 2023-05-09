@@ -6,11 +6,12 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: false },
   email: { type: String, required: false },
   password: { type: String, required: true },
+  salaryBase: { type: String, required: true },
   role: Joi.string().valid("staff", "admin", {
     _mongoose: { default: "staff" },
   }),
   his_list: Joi.array().meta({
-    _mongoose: { type: "[ObjectId]", ref: "Histories"},
+    _mongoose: { type: "[ObjectId]", ref: "Histories" },
   }),
 });
 
