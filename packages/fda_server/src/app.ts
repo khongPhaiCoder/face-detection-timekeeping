@@ -9,7 +9,7 @@ import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import lusca from 'lusca';
 import errorHandler from 'errorhandler';
-import api from './routes';
+import api, { handleRoute, errorHandler as errorHandlerRoute } from './routes';
 import faceapi from 'face-api.js';
 
 import { CLIENT_URL, PORT, SESSION_SECRET, MONGO_URL, __dirname } from './config';
@@ -65,6 +65,8 @@ app.use(morgan('combined', { stream: accessLogStream }));
 // app.use(multer(multerConfig.options).fields(multerConfig.fields));
 
 app.use('/api', api);
+app.use('*', handleRoute);
+app.use(errorHandlerRoute);
 
 if (ENVIRONMENT === ENV.DEV) {
   app.use(cors({ origin: CLIENT_URL }));
