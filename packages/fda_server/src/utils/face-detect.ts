@@ -5,7 +5,8 @@ import User from '../models/user';
 import { loadImage, Image, createCanvas } from 'canvas';
 const MODAL_PATH = path.join(__dirname, 'modelsTraining');
 const detectFace = async (imageData: Buffer) => {
-  const image = new Image();
+  try {
+    const image = new Image();
   image.src = imageData;
   const canvas = createCanvas(image.width, image.height);
   const context = canvas.getContext('2d');
@@ -50,6 +51,11 @@ const detectFace = async (imageData: Buffer) => {
     //   distance: result.distance
   });
   return results;
-  // return trainingData;
+  } catch (error) {
+    console.log('====================================');
+    console.log(error);
+    console.log('====================================');
+  }
+  return [];
 };
 export default detectFace;

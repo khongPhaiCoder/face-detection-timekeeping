@@ -13,3 +13,5 @@ router.use('/history', history);
 router.use('/training', training);
 
 export default router;
+export { default as errorHandler } from './error-handler.route';
+export { default as handleRoute } from './handle-route.route';
