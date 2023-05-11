@@ -19,7 +19,8 @@ class HistoryController {
       let labels: any[] = [];
       req.on('end', async () => {
         const completeBuffer = Buffer.concat(buffers);
-
+        console.log(completeBuffer);
+        
         if (completeBuffer) {
           labels = await detectFace(completeBuffer);
           if (labels.length > 0) {
@@ -80,14 +81,14 @@ class HistoryController {
                   await result.save();
                 }
                 const user = await User.findById(userId);
-                // const servo = new five.Servo({
-                //   pin: 9,
-                //   startAt: 0,
-                // });
-                // servo.to(180);
-                // board.wait(1000, () => {
-                //   servo.to(0);
-                // });
+                const servo = new five.Servo({
+                  pin: 9,
+                 startAt: 0,
+                });
+                servo.to(180);
+                board.wait(1000, () => {
+                  servo.to(0);
+                });
                 user.token.forEach((e) => {
                   var message = {
                     to: e,
@@ -127,7 +128,6 @@ class HistoryController {
       const user = await User.findById(id).select(['name', 'email', 'salaryBase']);
       const salaryBase = parseInt(user.salaryBase);
       var dateWorking;
-
       var query;
       if (month != null && year != null) {
         query = month + '/' + year;
