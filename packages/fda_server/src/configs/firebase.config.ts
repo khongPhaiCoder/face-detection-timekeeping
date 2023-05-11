@@ -1,7 +1,7 @@
 import FCM from 'fcm-node';
 
 var serverKey =
-  'AAAAKlqgvWA:APA91bEWrns3PwcGfc2Jbb_uskEZGS6lV3iCQPhD1ls6Wod15_KYkicR8Yb_4knCoazJOmlaTt-rskVyxl6NKtqLxrOEG6EeMIQTFC_NL69Jkoho-Z6eVWn0fQjtttTsoNrQxDemCVZb';
+  'AAAAKlqgvWA:APA91bH81gHsQnesQQ9LBEMKlzoPOWZbJpiycZpo5AYw4brZXpEYItBfxaT6pfVyKt_1j8vzBuDBzKxpe6rZnFjuyp-hPQGn0eSi_5Oi22RbG91bUCc1cvnONQnwt9go7lQ0tb01PSq3';
 var fcm = new FCM(serverKey);
 
 function sendNotification(message) {
