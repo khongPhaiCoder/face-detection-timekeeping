@@ -1,12 +1,39 @@
 const express = require("express");
 const User = require("../models/user");
-
+// const helper = require("../publsic/helper");
 const router = express.Router();
 
 // Login route
 router.post("/listUser", async (req, res) => {
   let listUser = await User.find();
   res.render("users/listUser", { listUser });
+});
+
+router.get("/add", async (req, res) => {
+  res.render("users/addUser");
+});
+
+router.post("/addUser", async (req, res) => {
+  let admin_id = req.session.userId;
+  console.log("sssssssss", admin_id);
+  let current_account = await User.find({ _id: admin_id });
+  console.log("asfasfg", current_account);
+  if (current_account[0].role === "admin") {
+    let { name, email, salaryBase } = req.body;
+    const existingLogin = await User.findOne({ email });
+    if (existingLogin) {
+      res.status(409).send("Username already exists");
+      return;
+    }
+    let password = "123";
+    const role = "admin";
+    console.log("rb: ", req.body);
+    const login = new User({ name, email, password, role, salaryBase });
+    await login.save();
+    res.redirect("/listUser");
+  } else {
+    res.send("You cannot add user");
+  }
 });
 
 router.get("/edit/:id", async (req, res) => {

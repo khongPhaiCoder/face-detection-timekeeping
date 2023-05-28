@@ -13,6 +13,7 @@ const session = require("express-session");
 const loginRoutes = require("./routes/signRoutes");
 const user = require("./routes/user");
 const TimeAnalysis = require("./routes/timeAnalysis");
+// const helper = require("./helper");
 const { log } = require("console");
 //cnn db
 mongoose.connect(
@@ -80,13 +81,17 @@ app.get("/dashboard", async (req, res) => {
   // let users = await User.find();
 
   for (let i = 0; i < users.length; i++) {
-    let his = await Hitories.find({ user: users[i]._id }).select("time");
+    let his = await Hitories.find({ user: users[i]._id }).select("time date");
 
     let total_time = 0;
     for (let j = 0; j < his.length; j++) {
-      if (his[j].time != undefined) {
+      let monthHis = Number(his[j].date.slice(3, 5)) - 1;
+      let now = new Date();
+      let currentMonth = now.getMonth();
+      if (his[j].time != undefined && monthHis == currentMonth) {
+        console.log(his[j].date.slice(3, 5), "tam");
         total_time += parseInt(his[j].time);
-        console.log("tia", parseInt(his[j].time), total_time);
+        // console.log("tia", parseInt(his[j].time), total_time);
       }
     }
     console.log("ttt", total_time);

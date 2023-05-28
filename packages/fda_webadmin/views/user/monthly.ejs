@@ -5,6 +5,11 @@
   </head>
   <body>
     <header><%- include('../partials/header'); %></header>
+
+    <% function convertMinutesToHours(minutes) { %> <% var hours =
+    Math.floor(minutes / 60); %> <% var remainingMinutes = minutes % 60; %> <%
+    return hours + " giờ " + remainingMinutes + " phút"; %> <% } %>
+
     <main>
       <div class="container">
         <h2 style="padding-top: 60px"><%= user.name %></h2>
@@ -57,12 +62,7 @@
                 <span>Làm ở công ty</span>
                 <% } %>
               </td>
-              <td>
-                <% if (history.time) { %> <% if (hours > 0) { %> <% let minutes
-                =(history.time) % 60 %> <%= hours %> giờ <%= minutes %> phút <%
-                } else {%> <% let minutes =(history.time) % 60 %> 0 giờ <%=
-                minutes %> phút <% } %> <% } else {%> 0 giờ <% } %>
-              </td>
+              <td><%= convertMinutesToHours(history.time) %></td>
               <td>
                 <div class="dropdown">
                   <a

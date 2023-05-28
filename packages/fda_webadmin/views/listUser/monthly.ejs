@@ -5,55 +5,49 @@
   </head>
   <body>
     <header><%- include('../partials/header'); %></header>
+
     <% function convertMinutesToHours(minutes) { %> <% var hours =
     Math.floor(minutes / 60); %> <% var remainingMinutes = minutes % 60; %> <%
     return hours + " giờ " + remainingMinutes + " phút"; %> <% } %>
+
     <main>
       <div class="container">
-        <h2 style="padding-top: 60px"><%= user[0].name %></h2>
-        <!-- <p><%= user %></p> -->
+        <h2 style="padding-top: 60px"><%= %></h2>
+        <!-- Example single danger button -->
+        <div class="btn-group">
+          <button
+            type="button"
+            class="btn btn-success dropdown-toggle"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Chọn tháng
+          </button>
+          <ul class="dropdown-menu">
+            <% for (let i = 0; i < months.length; i++) { %>
+            <li>
+              <a class="dropdown-item" href="#">Tháng <%= months[i] + 1 %></a>
+            </li>
+            <% } %>
+          </ul>
+        </div>
         <table class="table">
           <thead>
             <tr>
               <!-- <th scope="col">#</th> -->
               <th scope="col">Ngày</th>
               <th scope="col">Trạng thái</th>
-              <th scope="col">Số giờ làm việc</th>
+              <th scope="col">Thời gian làm việc</th>
               <th scope="col">Xem thêm</th>
             </tr>
-            <!-- <tr>
-              <td class="input-table">
-                <input type="text" placeholder="Type to Filter..." />
-              </td>
-              <td class="input-table">
-                <input type="text" placeholder="Type to Filter..." />
-              </td>
-              <td class="input-table">
-                <input type="text" placeholder="Type to Filter..." />
-              </td>
-              <td></td>
-            </tr> -->
           </thead>
 
           <tbody>
-            <% listHis.forEach(history => { %>
             <tr>
               <!-- <th scope="row">1</th> -->
-              <td><%= history.date %></td>
-              <td>
-                <% if (history.absen =='none') { %>
-                <span>Làm ở nhà</span>
-                <% } else {%>
-                <span>Làm ở công ty</span>
-                <% } %>
-              </td>
-              <td id="timeWorking">
-                <% if (history.time) { %>
-                <span><%= convertMinutesToHours(history.time) %></span>
-                <% } else {%>
-                <span>0 giờ 0 phút</span>
-                <% } %>
-              </td>
+              <td><%= %></td>
+              <td></td>
+              <td><%= %></td>
               <td>
                 <div class="dropdown">
                   <a
@@ -78,11 +72,8 @@
                   </a>
 
                   <ul class="dropdown-menu">
-                    <!-- <li><a class="dropdown-item" onclick="edit_comment('<%= history._id %>')" >Edit</a></li> -->
                     <li>
-                      <a
-                        href="/timeAnalysis/date/<%= history._id %>"
-                        class="dropdown-item"
+                      <a href="/timeAnalysis/date" class="dropdown-item"
                         >Chi tiết</a
                       >
                     </li>
@@ -90,18 +81,11 @@
                 </div>
               </td>
             </tr>
-            <script>
-              // Call the function from helper.js
-              var minutes = 120;
-              var result = convertMinutesToHours(minutes);
-              document.getElementById("result").textContent = result;
-            </script>
-            <% }) %>
           </tbody>
         </table>
       </div>
     </main>
 
-    <%- include('../partials/footer'); %>
+    <!-- <%- include('../partials/footer'); %> -->
   </body>
 </html>

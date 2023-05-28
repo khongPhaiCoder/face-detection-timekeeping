@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: false },
   email: { type: String, required: false },
   password: { type: String, required: true },
-  salaryBase: { type: String, required: true },
+  salaryBase: { type: String, required: false },
   role: Joi.string().valid("staff", "admin", {
     _mongoose: { default: "staff" },
   }),
