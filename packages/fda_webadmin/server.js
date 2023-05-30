@@ -91,7 +91,6 @@ app.get("/dashboard", async (req, res) => {
       if (his[j].time != undefined && monthHis == currentMonth) {
         console.log(his[j].date.slice(3, 5), "tam");
         total_time += parseInt(his[j].time);
-        // console.log("tia", parseInt(his[j].time), total_time);
       }
     }
     console.log("ttt", total_time);

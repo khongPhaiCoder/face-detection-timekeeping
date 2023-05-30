@@ -10,7 +10,7 @@
         <h2 style="padding-top: 60px"><%= user[0].name %></h2>
         <h4><i><%=his[0].date%></i></h4>
         <!-- <p><%= user %></p> -->
-        <table class="table">
+        <table class="table" id="detail-date">
           <thead>
             <tr>
               <!-- <th scope="col">#</th> -->
@@ -53,4 +53,30 @@
 
     <!-- <%- include('../partials/footer'); %> -->
   </body>
+  <script>
+    $(document).ready(function () {
+      // Setup - add a text input to each footer cell
+      $("#detail-date thead .datatable-filter-line").each(function () {
+        $(this).html('<input type="text"/>');
+      });
+
+      // DataTable
+      var table = $("#detail-date").DataTable({
+        initComplete: function () {
+          // Apply the search
+          this.api()
+            .columns()
+            .every(function () {
+              var that = this;
+
+              $("input", this.header()).on("keyup change clear", function () {
+                if (that.search() !== this.value) {
+                  that.search(this.value).draw();
+                }
+              });
+            });
+        },
+      });
+    });
+  </script>
 </html>

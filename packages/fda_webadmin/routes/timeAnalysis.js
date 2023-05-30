@@ -1,6 +1,8 @@
 const express = require("express");
 const User = require("../models/user");
 const Hitories = require("../models/hitories");
+const userController = require("../controllers/monthAnalysis");
+
 // const helper = require("../public/helper");
 const router = express.Router();
 
@@ -13,19 +15,9 @@ router.get("/detail/:id", async (req, res) => {
   res.render("user/show", { listHis, user });
 });
 
-router.get("/monthly", async (req, res) => {
-  let his = await Hitories.find().select("date user time");
-  // console.log(his, "kkgfahjs");
-  let months = [];
-  for (let i = 0; i < his.length; i++) {
-    let month = Number(his[i].date.slice(3, 5)) - 1;
-    if (!months.includes(month)) {
-      months.push(month);
-    }
-    console.log(months, "month");
-  }
-  res.render("listUser/monthly", { months });
-});
+router.get("/monthly", userController.getUserMonthly);
+
+router.get("/monthly/:month/:year", userController.getMonthly);
 
 router.get("/month/:id", async (req, res) => {
   let id = req.params.id;
@@ -43,16 +35,12 @@ router.get("/month/:id", async (req, res) => {
   for (let i = 0; i < listH.length; i++) {
     month = listH[i].date.slice(3, 5);
     year = listH[i].date.slice(6, 12);
-    // console.log(listH[i], "lkhjavvvv");
     if (month == currentMonth && year == currentYear) {
       // console.log(Number(listHis[i].time), "number");
       monthlyHour += Number(listH[i].time);
       listHis.push(listH[i]);
     }
-    // console.log(monthlyHour, "mhourr");
-    // console.log(year, "lkjhdaasss", month == currentMonth);
   }
-  // console.log("hdate", date);
   res.render("user/monthly", { listHis, user, monthlyHour });
 });
 

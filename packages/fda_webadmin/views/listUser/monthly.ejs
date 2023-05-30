@@ -5,11 +5,9 @@
   </head>
   <body>
     <header><%- include('../partials/header'); %></header>
-
     <% function convertMinutesToHours(minutes) { %> <% var hours =
     Math.floor(minutes / 60); %> <% var remainingMinutes = minutes % 60; %> <%
     return hours + " giờ " + remainingMinutes + " phút"; %> <% } %>
-
     <main>
       <div class="container">
         <h2 style="padding-top: 60px"><%= %></h2>
@@ -26,7 +24,11 @@
           <ul class="dropdown-menu">
             <% for (let i = 0; i < months.length; i++) { %>
             <li>
-              <a class="dropdown-item" href="#">Tháng <%= months[i] + 1 %></a>
+              <a
+                class="dropdown-item"
+                href="/timeAnalysis/monthly/<%= months[i] %>"
+                >Tháng <%= months[i] %></a
+              >
             </li>
             <% } %>
           </ul>
@@ -35,52 +37,30 @@
           <thead>
             <tr>
               <!-- <th scope="col">#</th> -->
-              <th scope="col">Ngày</th>
-              <th scope="col">Trạng thái</th>
-              <th scope="col">Thời gian làm việc</th>
-              <th scope="col">Xem thêm</th>
+              <th scope="col">Tên nhân viên</th>
+              <th scope="col">Số giờ làm việc tối thiểu</th>
+              <th scope="col">Số giờ làm việc thực tế</th>
+              <th scope="col">Lương cơ bản</th>
+              <th scope="col">Lương thực nhận</th>
             </tr>
           </thead>
 
           <tbody>
+            <% for (let i = 0; i < users.length; i++) { %>
             <tr>
               <!-- <th scope="row">1</th> -->
-              <td><%= %></td>
-              <td></td>
-              <td><%= %></td>
+              <td><%= users[i].name %></td>
+              <td>160</td>
+              <td><%= convertMinutesToHours(users[i].time) %></td>
+              <td><%= (users[i].salaryBase) %></td>
               <td>
-                <div class="dropdown">
-                  <a
-                    class="btn"
-                    href="#"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-three-dots"
-                      viewBox="0 0 16 16"
-                    >
-                      <path
-                        d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"
-                      />
-                    </svg>
-                  </a>
-
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a href="/timeAnalysis/date" class="dropdown-item"
-                        >Chi tiết</a
-                      >
-                    </li>
-                  </ul>
-                </div>
+                <% let hours =Math.floor(users[i].time / 60)%> <% if (hours >
+                160) { %> <%= Number(users[i].salaryBase) +
+                Number(users[i].salaryBase)/160*1.5*(hours-160) %> <% } else {%>
+                <%= Number(users[i].salaryBase)/160*(hours) %> <% } %>
               </td>
             </tr>
+            <% } %>
           </tbody>
         </table>
       </div>
