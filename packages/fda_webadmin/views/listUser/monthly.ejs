@@ -7,41 +7,38 @@
     <header><%- include('../partials/header'); %></header>
     <% function convertMinutesToHours(minutes) { %> <% var hours =
     Math.floor(minutes / 60); %> <% var remainingMinutes = minutes % 60; %> <%
-    return hours + " giờ " + remainingMinutes + " phút"; %> <% } %>
+    return hours + " hr " + remainingMinutes + " min"; %> <% } %>
     <main>
       <div class="container">
         <h2 style="padding-top: 60px"><%= %></h2>
         <!-- Example single danger button -->
-        <div class="btn-group">
-          <button
-            type="button"
-            class="btn btn-success dropdown-toggle"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            Chọn tháng
-          </button>
-          <ul class="dropdown-menu">
-            <% for (let i = 0; i < months.length; i++) { %>
-            <li>
-              <a
-                class="dropdown-item"
-                href="/timeAnalysis/monthly/<%= months[i] %>"
-                >Tháng <%= months[i] %></a
-              >
-            </li>
-            <% } %>
-          </ul>
-        </div>
+        <select
+          class="form-select"
+          aria-label="Default select example"
+          onchange="if (this.value) window.location.href = this.value;"
+        >
+          <% for (let i = 0; i < months.length; i++) { %> <% if(months[i] ==
+          option){ %>
+          <option value="/timeAnalysis/monthly/<%= months[i] %>" selected>
+            <%= months[i] %>
+          </option>
+          <% } else{ %>
+          <option value="/timeAnalysis/monthly/<%= months[i] %>">
+            <%= months[i] %>
+          </option>
+          <% } %> <% } %>
+        </select>
+
         <table class="table">
           <thead>
             <tr>
               <!-- <th scope="col">#</th> -->
-              <th scope="col">Tên nhân viên</th>
-              <th scope="col">Số giờ làm việc tối thiểu</th>
-              <th scope="col">Số giờ làm việc thực tế</th>
-              <th scope="col">Lương cơ bản</th>
-              <th scope="col">Lương thực nhận</th>
+              <th scope="col">Name</th>
+              <th scope="col">Required hours</th>
+              <th scope="col">Working hours</th>
+              <th scope="col">Salary base</th>
+              <th scope="col">Final Salary</th>
+              <th scope="col">Action</th>
             </tr>
           </thead>
 
@@ -58,6 +55,47 @@
                 160) { %> <%= Number(users[i].salaryBase) +
                 Number(users[i].salaryBase)/160*1.5*(hours-160) %> <% } else {%>
                 <%= Number(users[i].salaryBase)/160*(hours) %> <% } %>
+              </td>
+              <td>
+                <div class="dropdown">
+                  <a
+                    class="btn"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-three-dots"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"
+                      />
+                    </svg>
+                  </a>
+
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a
+                        href="/timeAnalysis/detail/<%= users[i]._id %>/<%= option %>"
+                        class="dropdown-item"
+                        >detail</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="/timeAnalysis/month/<%= users[i]._id %>/<%= option %>"
+                        class="dropdown-item"
+                        >analysis</a
+                      >
+                    </li>
+                  </ul>
+                </div>
               </td>
             </tr>
             <% } %>

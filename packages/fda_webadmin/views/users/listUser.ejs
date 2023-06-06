@@ -8,15 +8,15 @@
     <main>
       <div class="container">
         <div class="action">
-          <a href="/user/add" class="btn btn-success">Nhân viên mới +</a>
+          <a href="/user/add" class="btn btn-success">Add user +</a>
           <table class="table">
             <thead>
               <tr>
                 <!-- <th scope="col">ID</th> -->
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
-                <th scope="col">Salary</th>
-                <th scope="col">Action</th>
+                <th scope="col">Salary base</th>
+                <th scope="col">Hành động</th>
               </tr>
             </thead>
             <tbody>
@@ -29,15 +29,13 @@
                 <td><%= data[i].salaryBase %></td>
                 <td>
                   <a href="user/edit/<%= data[i]._id %>" class="btn btn-primary"
-                    >Edit</a
+                    >Sửa</a
                   >
-                  <form
-                    action="/user/delete/<%= data[i]._id %>"
-                    method="post"
-                    class="d-inline"
+                  <a
+                    href="/user/delete/<%= data[i]._id %>"
+                    class="btn btn-danger"
+                    >Xóa</a
                   >
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                  </form>
                 </td>
               </tr>
               <% } %>
@@ -46,7 +44,40 @@
         </div>
       </div>
     </main>
+    <div class="modal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Delete</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>Modal body text goes here.</p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- <%- include('../partials/footer'); %> -->
   </body>
+  <script>
+    $(".modal .btn-close").click(function () {
+      $(".modal").css("display", "block");
+    });
+  </script>
 </html>

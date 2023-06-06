@@ -80,20 +80,23 @@ app.get("/dashboard", async (req, res) => {
   let users = await User.find({ role: "staff" });
   // let users = await User.find();
 
+  let now = new Date();
+  let currentMonth = now.getMonth() + 1;
+  let currentYear = now.getFullYear();
+  let option = currentMonth + "/" + currentYear;
+
   for (let i = 0; i < users.length; i++) {
     let his = await Hitories.find({ user: users[i]._id }).select("time date");
 
     let total_time = 0;
     for (let j = 0; j < his.length; j++) {
-      let monthHis = Number(his[j].date.slice(3, 5)) - 1;
-      let now = new Date();
-      let currentMonth = now.getMonth();
+      let monthHis = Number(his[j].date.slice(3, 5));
       if (his[j].time != undefined && monthHis == currentMonth) {
-        console.log(his[j].date.slice(3, 5), "tam");
+        // console.log(his[j].date.slice(3, 5), "tam");
         total_time += parseInt(his[j].time);
       }
     }
-    console.log("ttt", total_time);
+    // console.log("ttt", total_time);
     users[i].his_list = his;
     users[i].time = total_time;
     // console.log("his", his, "ll", users[i]);
@@ -103,10 +106,10 @@ app.get("/dashboard", async (req, res) => {
     return b.time - a.time;
   });
   for (let index = 0; index < users.length; index++) {
-    console.log(users[index].time, ">>>");
+    // console.log(users[index].time, ">>>");
   }
   // console.log("id: ", users);
-  res.render("user/index", { users });
+  res.render("user/index", { users, option });
 });
 
 app.listen(port, () => {

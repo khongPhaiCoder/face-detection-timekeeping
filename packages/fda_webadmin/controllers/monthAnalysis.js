@@ -5,11 +5,12 @@ const Hitories = require("../models/hitories");
 exports.getUserMonthly = async (req, res) => {
   let users = await User.find({ role: "staff" });
   historyList = [];
+  let now = new Date();
+  let currentMonth = now.getMonth() + 1;
+  let currentYear = now.getFullYear();
+  let option = currentMonth + "/" + currentYear;
+  console.log("optionnnnn", option);
   for (let i = 0; i < users.length; i++) {
-    let now = new Date();
-    let currentMonth = now.getMonth() + 1;
-    let currentYear = now.getFullYear();
-
     let monthlyHour = 0;
     let listHis = [];
     let total_time = 0;
@@ -28,7 +29,7 @@ exports.getUserMonthly = async (req, res) => {
       }
     }
 
-    console.log("ttt", total_time);
+    // console.log("ttt", total_time);
     users[i].his_list = listH;
     users[i].time = total_time;
     users[i].password = (monthlyHour / 160) * Number(users[i].salaryBase);
@@ -40,7 +41,7 @@ exports.getUserMonthly = async (req, res) => {
     return b.time - a.time;
   });
   for (let index = 0; index < users.length; index++) {
-    console.log(users[index].time, ">>>");
+    // console.log(users[index].time, ">>>");
   }
   let months = [];
   let his = await Hitories.find().select("date user time");
@@ -54,8 +55,8 @@ exports.getUserMonthly = async (req, res) => {
     }
     // console.log(months, "month");
   }
-  console.log("users", users);
-  res.render("listUser/monthly", { months, users });
+  // console.log("users", users);
+  res.render("listUser/monthly", { months, users, option });
 };
 
 exports.getMonthly = async (req, res) => {
@@ -85,7 +86,7 @@ exports.getMonthly = async (req, res) => {
       }
     }
 
-    console.log("ttt", total_time);
+    // console.log("ttt", total_time);
     users[i].his_list = listH;
     users[i].time = total_time;
     historyList.push(listHis);
@@ -107,5 +108,7 @@ exports.getMonthly = async (req, res) => {
     }
     // console.log(months, "month");
   }
-  res.render("listUser/monthly", { months, users });
+  let option = req.params.month + "/" + req.params.year;
+  console.log("option", option);
+  res.render("listUser/monthly", { months, users, option });
 };

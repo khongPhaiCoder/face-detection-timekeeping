@@ -19,13 +19,13 @@ router.post("/addUser", async (req, res) => {
   let current_account = await User.find({ _id: admin_id });
   console.log("asfasfg", current_account);
   if (current_account[0].role === "admin") {
-    let { name, email, salaryBase } = req.body;
+    let { name, email, salaryBase, password } = req.body;
     const existingLogin = await User.findOne({ email });
     if (existingLogin) {
       res.status(409).send("Username already exists");
       return;
     }
-    let password = "123";
+    // let password = "123";
     const role = "admin";
     console.log("rb: ", req.body);
     const login = new User({ name, email, password, role, salaryBase });
@@ -63,7 +63,7 @@ router.post("/edit/:id", async (req, res) => {
 
   res.redirect("/listUser");
 });
-router.post("/delete/:id", async (req, res) => {
+router.get("/delete/:id", async (req, res) => {
   let user_id = req.params.id;
   let admin_id = req.session.userId;
   // console.log(req.session.userId,"ppp");

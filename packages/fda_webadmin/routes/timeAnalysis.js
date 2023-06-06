@@ -6,12 +6,24 @@ const userController = require("../controllers/monthAnalysis");
 // const helper = require("../public/helper");
 const router = express.Router();
 
-router.get("/detail/:id", async (req, res) => {
+router.get("/detail/:id/:month/:year", async (req, res) => {
   let id = req.params.id;
   console.log("id pp", id);
   let user = await User.find({ _id: id });
-  let listHis = await Hitories.find({ user: id });
-  console.log("hí", user);
+  let listHistory = await Hitories.find({ user: id });
+  let listHis = [];
+  let month = Number(req.params.month);
+  let year = req.params.year;
+  for (let i = 0; i < listHistory.length; i++) {
+    let date = listHistory[i].date;
+    monthHis = Number(listHistory[i].date.slice(3, 5));
+    yearHis = listHistory[i].date.slice(6, 12);
+    console.log(month, monthHis, year, yearHis);
+    if (month == monthHis && year == yearHis) {
+      listHis.push(listHistory[i]);
+    }
+  }
+  // console.log("hí", user);
   res.render("user/show", { listHis, user });
 });
 
@@ -19,21 +31,20 @@ router.get("/monthly", userController.getUserMonthly);
 
 router.get("/monthly/:month/:year", userController.getMonthly);
 
-router.get("/month/:id", async (req, res) => {
+router.get("/month/:id/:month/:year", async (req, res) => {
   let id = req.params.id;
   // console.log("id pp", id);
   let now = new Date();
-  let currentMonth = now.getMonth() + 1;
-  let currentYear = now.getFullYear();
-  monthYear = currentMonth + "/" + currentYear;
-  console.log(monthYear, "myyyy");
+  let currentMonth = req.params.month;
+  let currentYear = req.params.year;
+  option = currentMonth + "/" + currentYear;
   let user = await User.findById(id);
   console.log(user.salaryBase, "dasgaihjgi");
   let listH = await Hitories.find({ user: id });
   let monthlyHour = 0;
   let listHis = [];
   for (let i = 0; i < listH.length; i++) {
-    month = listH[i].date.slice(3, 5);
+    month = Number(listH[i].date.slice(3, 5));
     year = listH[i].date.slice(6, 12);
     if (month == currentMonth && year == currentYear) {
       // console.log(Number(listHis[i].time), "number");
@@ -41,7 +52,8 @@ router.get("/month/:id", async (req, res) => {
       listHis.push(listH[i]);
     }
   }
-  res.render("user/monthly", { listHis, user, monthlyHour });
+  console.log("monthlyHour", option);
+  res.render("user/monthly", { listHis, user, monthlyHour, option });
 });
 
 router.get("/date/:id", async (req, res) => {
