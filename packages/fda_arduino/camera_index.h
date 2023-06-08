@@ -714,8 +714,6 @@ char index_html[]  = R"rawliteral(
     <style>
       body {
         font-family: Arial, Helvetica, sans-serif;
-        background: #181818;
-        color: #efefef;
         font-size: 16px;
       }
 
@@ -1039,7 +1037,9 @@ char index_html[]  = R"rawliteral(
         width: 100%;
         max-width: 1000px; /* Tùy chỉnh kích thước khung ảnh */
         margin: 0 auto;
-        border: 1px solid #b1154a;
+        border: 1px solid;
+        border-image-slice: 1;
+        border-image-source: linear-gradient(to right bottom, #6a5af9, #f62682);
       }
       .image-container img {
         display: block;
@@ -1056,7 +1056,7 @@ char index_html[]  = R"rawliteral(
         padding: 10px 20px;
         border: none;
         border-radius: 5px;
-        background-color: #000;
+        background: linear-gradient(#e66465, #9198e5);
         color: #fff;
         font-size: 16px;
         cursor: pointer;
@@ -1067,14 +1067,40 @@ char index_html[]  = R"rawliteral(
         display: flex;
       }
       #capture-btn:hover,
+      #capture-btn-out:hover,
       #record-btn:hover {
         background-color: #fff;
         color: #000;
       }
+      .icon {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        max-width: 200px; /* Tùy chỉnh kích thước khung ảnh */
+        margin: 0 auto;
+        border: 1px solid;
+        border-image-slice: 1;
+        border-image-source: linear-gradient(to right bottom, #6a5af9, #f62682);
+      }
+      header h1 {
+        font-size: 30px;
+        text-align: center;
+        font-weight: 600;
+        background-image: linear-gradient(to left, #553c9a, #b393d3);
+        color: transparent;
+        background-clip: text;
+        -webkit-background-clip: text;
+      }
+      header{
+        margin-bottom: 10px;
+      }
     </style>
   </head>
   <body>
-  
+    <header>
+      <h1>Nhận diện khuôn mặt</h1>
+      <img class="icon" src="https://dut.udn.vn/Files/admin/images/Tin_tuc/Khac/2020/LogoDUT/image002.jpg" />
+    </header>
     <div class="image-container">
       <div class="close" id="close-stream"></div>
       <img id="stream" src="" alt="Your Image" />
@@ -1083,16 +1109,16 @@ char index_html[]  = R"rawliteral(
       <button id="capture-btn-in">Điểm danh</button>
       <button id="record-btn">Quay video</button>
     </div>
-    <p>Camera position (x): <span id="servopositionx" type ="number" ></span></p>
-    <p>Camera position (y): <span id="servopositiony" type ="number" ></span></p>
+    <p><span id="servopositionx" type="number"></span></p>
+    <p><span id="servopositiony" type="number"></span></p>
     <nav>
       <section id="buttons">
-        <button id="left" model="contents">Left</button>
-        <button id="up" model="contents">Up</button>
+        <button id="left" model="contents"></button>
+        <button id="up" model="contents"></button>
       </section>
       <section id="buttons">
-        <button id="right" model="contents">Right</button>
-        <button id="down" model="contents">Down</button>
+        <button id="right" model="contents"></button>
+        <button id="down" model="contents"></button>
       </section>
     </nav>
     <script>
@@ -1235,7 +1261,7 @@ char index_html[]  = R"rawliteral(
         const startStream = () => {
           view.src = `${streamUrl}/stream`;
           streamButton.innerHTML = 'Stop video';
-          console.log("Stop video");
+          console.log('Stop video');
 
           show(viewContainer);
         };
@@ -1246,8 +1272,6 @@ char index_html[]  = R"rawliteral(
           view.src = `${baseHost}/checkin?$${Date.now()}`;
           show(viewContainer);
         };
-
-     
 
         closeButton.onclick = () => {
           stopStream();
